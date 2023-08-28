@@ -25,14 +25,17 @@ def ask_for_date():
         'Year? E.g. 2023',
         default=str(date.today().year),
     ).ask()
+
     month = questionary.text(
         'Month? E.g. 7',
         default=str(date.today().month),
     ).ask()
+
     day = questionary.text(
         'Day? E.g. 17',
         default=str(date.today().day),
     ).ask()
+
     return datetime.strptime(f'{year}-{month}-{day}', '%Y-%m-%d').date()
 
 

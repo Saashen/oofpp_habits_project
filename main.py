@@ -55,7 +55,14 @@ def cli():
             creation_time = datetime.strptime(creation_time_string, '%Y-%m-%d')
             questionary.confirm(f'You cannot enter the task completion date earlier than creation time '
                                 f'`{str(creation_time)}` and later than today.').ask()
-            custom_date = ask_for_date()
+            
+            custom_date = date.today()
+            try:
+                custom_date = ask_for_date()
+                print(custom_date)
+            except ValueError:
+                print('The date is not valid.')
+                return
 
             if custom_date > date.today() or custom_date < creation_time.date():
                 print('The creation date cannot be earlier than creation time and later than today!')
