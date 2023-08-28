@@ -19,7 +19,8 @@ def cli():
     while not stop:
         choice = questionary.select(
             'What do you want to do?',
-            choices=['Create a new habit', 'Check off the habit`s task', 'Get analytics', 'Delete the habit', 'Exit']
+            choices=['Create a new habit', 'Check off the habit`s task',
+                     'Get analytics', 'Delete the habit', 'Exit']
         ).ask()
 
         if choice == 'Create a new habit':
@@ -30,13 +31,18 @@ def cli():
                 print(f'The habit with the title `{title}` already exists.')
                 return
 
-            description = questionary.text('What is the description of your habit?').ask()
+            description = questionary.text(
+                'What is the description of your habit?').ask()
             periodicity = questionary.select(
                 'What is the periodicity of your habit?',
                 choices=['daily', 'weekly']
             ).ask()
-            questionary.confirm(f'You cannot enter the habit`s creation date later than today.').ask()
+            questionary.confirm(
+                f'You cannot enter the habit`s creation date later than today.').ask()
             custom_date = ask_for_date()
+
+            if title or description or periodicity or custom_date is None:
+                return
 
             if custom_date > date.today():
                 print('The creation date cannot be later than today!')
@@ -55,17 +61,15 @@ def cli():
             creation_time = datetime.strptime(creation_time_string, '%Y-%m-%d')
             questionary.confirm(f'You cannot enter the task completion date earlier than creation time '
                                 f'`{str(creation_time)}` and later than today.').ask()
-            
-            custom_date = date.today()
-            try:
-                custom_date = ask_for_date()
-                print(custom_date)
-            except ValueError:
-                print('The date is not valid.')
+
+            custom_date = ask_for_date()
+
+            if custom_date is None:
                 return
 
             if custom_date > date.today() or custom_date < creation_time.date():
-                print('The creation date cannot be earlier than creation time and later than today!')
+                print(
+                    'The creation date cannot be earlier than creation time and later than today!')
                 return
 
             habit.complete_task(db, custom_date)

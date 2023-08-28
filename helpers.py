@@ -1,5 +1,6 @@
 from datetime import date, datetime
 import questionary
+from constants import invalid_value_message
 
 from db import get_habit, get_latest_date, get_creation_time
 
@@ -19,22 +20,28 @@ def ask_for_title():
 def ask_for_date():
     """
     Ask user for a year, a month, and a date and create the date object from them
-    :return: a date object
+    :return: a date object or None
     """
     year = questionary.text(
         'Year? E.g. 2023',
         default=str(date.today().year),
+        validate=lambda text: True if len(text) == 4 and int(text) is not ValueError and text else invalid_value_message
     ).ask()
 
     month = questionary.text(
         'Month? E.g. 7',
         default=str(date.today().month),
+        validate=lambda text: True if len(text) == 4 and int(text) is not ValueError else invalid_value_message
     ).ask()
 
     day = questionary.text(
         'Day? E.g. 17',
         default=str(date.today().day),
+        validate=lambda text: True if len(text) == 4 and int(text) is not ValueError else invalid_value_message
     ).ask()
+
+    if year or month or day is None:
+        return
 
     return datetime.strptime(f'{year}-{month}-{day}', '%Y-%m-%d').date()
 
@@ -46,6 +53,9 @@ def check_if_exists(db, habit_title):
     :param habit_title: a habit's title
     :return: Boolean
     """
+    if habit_title is None:
+        print(invalid_value_message)
+        return False
     habit_to_check = get_habit(db, habit_title)
     if habit_to_check is None:
         print(f'The habit with the title `{habit_title}` does not exist.')
