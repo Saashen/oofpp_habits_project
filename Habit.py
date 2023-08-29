@@ -4,6 +4,7 @@ from db import (
     add_habit,
     add_completed_task,
     delete_habit,
+    get_creation_time,
     get_streak_count,
     get_longest_streak,
     get_periodicity,
@@ -68,11 +69,14 @@ class DatabaseHabit(Habit):
         streak_count = get_streak_count(db, self.title)[0]
         longest_streak = get_longest_streak(db, self.title)[0]
         periodicity = get_periodicity(db, self.title)[0]
+        creation_time = get_creation_time(db, self.title)[0]
         periodicity_days = 1 if periodicity == "daily" else 7
         latest_date = define_latest_date(db, self.title)
 
-        add_completed_task(db, self.title, custom_date)
-        if custom_date - timedelta(days=periodicity_days) <= latest_date:
+        if creation_time != latest_date and custom_date == latest_date:
+            print("You have already completed this task on this day.")
+            return
+        elif custom_date - timedelta(days=periodicity_days) <= latest_date:
             update_streak_count(db, self.title, streak_count)
             print(f"The successful streak count was updated.")
             if streak_count + 1 > longest_streak:
@@ -86,6 +90,8 @@ class DatabaseHabit(Habit):
             )
             reset_streak_count(db, self.title)
             print(f"The successful streak count was updated.")
+
+        add_completed_task(db, self.title, custom_date)
         db.commit()
 
     def delete(self, db):

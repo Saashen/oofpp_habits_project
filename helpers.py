@@ -25,32 +25,27 @@ def ask_for_date():
     year = questionary.text(
         "Year? E.g. 2023",
         default=str(date.today().year),
-        validate=lambda text: True
-        if len(text) == 4 and int(text) is not ValueError and text
-        else invalid_value_message,
+        validate=lambda text: True if len(text) == 4 else invalid_value_message,
     ).ask()
 
     month = questionary.text(
         "Month? E.g. 7",
         default=str(date.today().month),
-        validate=lambda text: True
-        if len(text) == 4 and int(text) is not ValueError
-        else invalid_value_message,
+        validate=lambda text: True if 0 < len(text) < 3 else invalid_value_message,
     ).ask()
 
     day = questionary.text(
         "Day? E.g. 17",
         default=str(date.today().day),
-        validate=lambda text: True
-        if len(text) == 4 and int(text) is not ValueError
-        else invalid_value_message,
+        validate=lambda text: True if 0 < len(text) < 3 else invalid_value_message,
     ).ask()
 
-    if year or month or day is None:
+    try:
+        return datetime.strptime(f"{year}-{month}-{day}", "%Y-%m-%d").date()
+    except ValueError:
+        print("The date is not valid.")
         return
-
-    return datetime.strptime(f"{year}-{month}-{day}", "%Y-%m-%d").date()
-
+    
 
 def check_if_exists(db, habit_title):
     """
