@@ -10,6 +10,7 @@ from analytics import (
     get_weakest_habits,
 )
 from helpers import ask_for_title, ask_for_date, check_if_exists
+from constants import invalid_value_message
 
 
 def cli():
@@ -52,7 +53,8 @@ def cli():
             ).ask()
             custom_date = ask_for_date()
 
-            if title or description or periodicity or custom_date is None:
+            if custom_date is None or title is None:
+                print(invalid_value_message)
                 return
 
             if custom_date > date.today():
@@ -65,6 +67,7 @@ def cli():
             title = ask_for_title()
 
             if check_if_exists(db, title) is False:
+                print(invalid_value_message)
                 return
 
             habit = DatabaseHabit(title)
@@ -78,6 +81,7 @@ def cli():
             custom_date = ask_for_date()
 
             if custom_date is None:
+                print(invalid_value_message)
                 return
 
             if custom_date > date.today() or custom_date < creation_time.date():

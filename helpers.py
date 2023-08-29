@@ -43,9 +43,8 @@ def ask_for_date():
     try:
         return datetime.strptime(f"{year}-{month}-{day}", "%Y-%m-%d").date()
     except ValueError:
-        print("The date is not valid.")
         return
-    
+
 
 def check_if_exists(db, habit_title):
     """
@@ -63,17 +62,4 @@ def check_if_exists(db, habit_title):
         return False
     else:
         return True
-
-
-def define_latest_date(db, habit_title):
-    """
-    If exists, return the latest completed task of a habit, otherwise return the creation time of a habit
-    :param db: a database connection
-    :param habit_title: a habit's title
-    :return: a date object
-    """
-    latest_date_string = get_latest_date(db, habit_title)[0]
-    if latest_date_string is None:
-        latest_date_string = get_creation_time(db, habit_title)[0]
-    latest_date = datetime.strptime(latest_date_string, "%Y-%m-%d").date()
-    return latest_date
+    

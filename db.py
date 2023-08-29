@@ -1,4 +1,5 @@
 import sqlite3
+from datetime import date
 
 
 def get_db(name="main.db"):
@@ -41,7 +42,9 @@ def create_tables(db):
     db.commit()
 
 
-def add_habit(db, title, description, periodicity, creation_time):
+def add_habit(
+    db, title, description="", periodicity="daily", creation_time=date.today()
+):
     """
     Add a habit to the database
     :param db: a database connection
