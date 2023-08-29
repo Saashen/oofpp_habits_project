@@ -60,8 +60,9 @@ class DatabaseHabit(Habit):
                 update_longest_streak(db, self.title, longest_streak)
                 print(f'You have a new record! Your longest streak for the habit `{self.title}` is {streak_count + 1}.')
         else:
-            reset_streak_count(db, self.title)
             print(f'You broke your habit! You skipped more than {timedelta(days=periodicity_days).days} day(s)')
+            reset_streak_count(db, self.title)
+            print(f'The successful streak count was updated.')
         db.commit()
 
     def delete(self, db):

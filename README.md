@@ -20,7 +20,7 @@ The application can:
   - list all habits of a certain periodicity
   - the longest streak of a habit
   - the longest streak of all habits, sorted by periodicity
-  - habits user struggled the most, sorted by periodicity
+  - habits user struggled the most lately, sorted by periodicity
 - delete habits
 
 ## Installation
@@ -41,8 +41,16 @@ and follow instructions in the terminal.
 
 ## Tests
 
+For PyCharm use
+
 ```shell
 pytest .
+```
+
+For Visual Studio Code use
+
+```shell
+python -m pytest
 ```
 
 ## License

@@ -232,13 +232,13 @@ def update_streak_count(db, habit_title, streak_count):
 
 def reset_streak_count(db, habit_title):
     """
-    Set a streak count of a habit to 0
+    Set a streak count of a habit to 1
     :param db: a database connection
     :param habit_title: a habit's title
     :return: None
     """
     cur = db.cursor()
-    cur.execute("UPDATE habit SET streak_count=? WHERE title=?", (0, habit_title))
+    cur.execute("UPDATE habit SET streak_count=? WHERE title=?", (1, habit_title))
     db.commit()
 
 

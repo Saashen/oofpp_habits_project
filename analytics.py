@@ -58,7 +58,7 @@ def get_streaks_for_habits(db):
 
 def get_weakest_habits(db):
     """
-    Print the habits with lowest longest streak from each periodicity
+    Print the habits with the lowest current streak count from each periodicity
     :param db: a database connection
     :return: None
     """
