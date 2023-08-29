@@ -19,20 +19,24 @@ def create_tables(db):
     :return: None
     """
     cur = db.cursor()
-    cur.execute("""CREATE TABLE IF NOT EXISTS habit (
+    cur.execute(
+        """CREATE TABLE IF NOT EXISTS habit (
         title TEXT PRIMARY KEY,
         description TEXT,
         periodicity TEXT,
         streak_count INT,
         longest_streak INT,
         creation_time TEXT
-    )""")
+    )"""
+    )
 
-    cur.execute("""CREATE TABLE IF NOT EXISTS completed_task (
+    cur.execute(
+        """CREATE TABLE IF NOT EXISTS completed_task (
         date TEXT,
         habit_title TEXT,
         FOREIGN KEY (habit_title) REFERENCES habit(title)
-    )""")
+    )"""
+    )
 
     db.commit()
 
@@ -50,9 +54,11 @@ def add_habit(db, title, description, periodicity, creation_time):
     cur = db.cursor()
     streak_count = 0
     longest_streak = 0
-    cur.execute("INSERT INTO habit VALUES (?, ?, ?, ?, ?, ?)",
-                (title, description, periodicity, streak_count, longest_streak, creation_time))
-    print(f'The habit with the title `{title}` was successfully added.')
+    cur.execute(
+        "INSERT INTO habit VALUES (?, ?, ?, ?, ?, ?)",
+        (title, description, periodicity, streak_count, longest_streak, creation_time),
+    )
+    print(f"The habit with the title `{title}` was successfully added.")
     db.commit()
 
 
@@ -65,7 +71,9 @@ def delete_completed_tasks(db, habit_title):
     """
     cur = db.cursor()
     cur.execute("DELETE FROM completed_task WHERE habit_title=?", (habit_title,))
-    print(f'The completed tasks of the habit `{habit_title}` were successfully deleted.')
+    print(
+        f"The completed tasks of the habit `{habit_title}` were successfully deleted."
+    )
     db.commit()
 
 
@@ -78,7 +86,7 @@ def delete_habit(db, habit_title):
     """
     cur = db.cursor()
     cur.execute("DELETE FROM habit WHERE title=?", (habit_title,))
-    print(f'The habit with the title `{habit_title}` was successfully deleted.')
+    print(f"The habit with the title `{habit_title}` was successfully deleted.")
     db.commit()
 
 
@@ -125,7 +133,10 @@ def get_completed_tasks(db, habit_title):
     :return: all completed tasks of a habit or a message that such a habit does not exist
     """
     cur = db.cursor()
-    does_exist = cur.execute("SELECT EXISTS (SELECT * FROM completed_task WHERE habit_title=?)", (habit_title,))
+    does_exist = cur.execute(
+        "SELECT EXISTS (SELECT * FROM completed_task WHERE habit_title=?)",
+        (habit_title,),
+    )
     if does_exist:
         cur.execute("SELECT * FROM completed_task WHERE habit_title=?", (habit_title,))
         return cur.fetchall()
@@ -153,7 +164,10 @@ def get_all_streak_counts(db, periodicity):
     :return: title, streak count, periodicity of habits
     """
     cur = db.cursor()
-    cur.execute("SELECT title, streak_count, periodicity FROM habit WHERE periodicity=?", (periodicity,))
+    cur.execute(
+        "SELECT title, streak_count, periodicity FROM habit WHERE periodicity=?",
+        (periodicity,),
+    )
     return cur.fetchall()
 
 
@@ -177,7 +191,10 @@ def get_longest_streaks(db, periodicity):
     :return: title, longest streak, periodicity of habits
     """
     cur = db.cursor()
-    cur.execute("SELECT title, longest_streak, periodicity FROM habit WHERE periodicity=?", (periodicity,))
+    cur.execute(
+        "SELECT title, longest_streak, periodicity FROM habit WHERE periodicity=?",
+        (periodicity,),
+    )
     return cur.fetchall()
 
 
@@ -226,7 +243,9 @@ def update_streak_count(db, habit_title, streak_count):
     :return: None
     """
     cur = db.cursor()
-    cur.execute("UPDATE habit SET streak_count=? WHERE title=?", (streak_count + 1, habit_title))
+    cur.execute(
+        "UPDATE habit SET streak_count=? WHERE title=?", (streak_count + 1, habit_title)
+    )
     db.commit()
 
 
@@ -251,7 +270,10 @@ def update_longest_streak(db, habit_title, longest_streak):
     :return: None
     """
     cur = db.cursor()
-    cur.execute("UPDATE habit SET longest_streak=? WHERE title=?", (longest_streak + 1, habit_title))
+    cur.execute(
+        "UPDATE habit SET longest_streak=? WHERE title=?",
+        (longest_streak + 1, habit_title),
+    )
     db.commit()
 
 

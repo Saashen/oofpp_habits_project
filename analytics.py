@@ -1,4 +1,10 @@
-from db import get_habits_titles, get_habits_period, get_longest_streaks, get_longest_streak, get_all_streak_counts
+from db import (
+    get_habits_titles,
+    get_habits_period,
+    get_longest_streaks,
+    get_longest_streak,
+    get_all_streak_counts,
+)
 from Habit import Periodicity
 
 
@@ -11,7 +17,7 @@ def get_habits(db):
     titles = get_habits_titles(db)
     print("Habit titles are: ")
     for idx, x in enumerate(titles):
-        print(f'{idx + 1}. {x[0]}', end=' \n')
+        print(f"{idx + 1}. {x[0]}", end=" \n")
 
 
 def get_period_habits(db, period):
@@ -24,10 +30,10 @@ def get_period_habits(db, period):
     habits_period = get_habits_period(db, period)
     print(f"The habits of the period `{period}` are: ")
     if len(habits_period) < 1:
-        print('None')
+        print("None")
     else:
         for idx, x in enumerate(habits_period):
-            print(f'{idx + 1}. {x[0]}', end=' \n')
+            print(f"{idx + 1}. {x[0]}", end=" \n")
 
 
 def get_streak_for_habit(db, title):
@@ -53,7 +59,7 @@ def get_streaks_for_habits(db):
         sorted_streaks = sorted(streaks, key=lambda feature: feature[1], reverse=True)
         print(period)
         for idx, x in enumerate(sorted_streaks):
-            print(f'{idx + 1}. {x[0]} - {x[1]}', end=' \n')
+            print(f"{idx + 1}. {x[0]} - {x[1]}", end=" \n")
 
 
 def get_weakest_habits(db):
@@ -67,4 +73,4 @@ def get_weakest_habits(db):
         streaks = get_all_streak_counts(db, period)
         sorted_streaks = sorted(streaks, key=lambda x: x[1])
         print(period)
-        print(f'{sorted_streaks[0][0]} - {sorted_streaks[0][1]}', end=' \n')
+        print(f"{sorted_streaks[0][0]} - {sorted_streaks[0][1]}", end=" \n")

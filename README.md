@@ -41,13 +41,13 @@ and follow instructions in the terminal.
 
 ## Tests
 
-For PyCharm use
+If you are using PyCharm IDE, you can start tests with 
 
 ```shell
 pytest .
 ```
 
-For Visual Studio Code use
+For Visual Studio Code IDE use
 
 ```shell
 python -m pytest

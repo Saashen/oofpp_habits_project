@@ -11,8 +11,8 @@ def ask_for_title():
     :return: a questionary question
     """
     title = questionary.text(
-        'What is the title of your habit?',
-        validate=lambda text: True if len(text) > 0 else 'Please enter a value'
+        "What is the title of your habit?",
+        validate=lambda text: True if len(text) > 0 else "Please enter a value",
     ).ask()
     return title
 
@@ -23,27 +23,33 @@ def ask_for_date():
     :return: a date object or None
     """
     year = questionary.text(
-        'Year? E.g. 2023',
+        "Year? E.g. 2023",
         default=str(date.today().year),
-        validate=lambda text: True if len(text) == 4 and int(text) is not ValueError and text else invalid_value_message
+        validate=lambda text: True
+        if len(text) == 4 and int(text) is not ValueError and text
+        else invalid_value_message,
     ).ask()
 
     month = questionary.text(
-        'Month? E.g. 7',
+        "Month? E.g. 7",
         default=str(date.today().month),
-        validate=lambda text: True if len(text) == 4 and int(text) is not ValueError else invalid_value_message
+        validate=lambda text: True
+        if len(text) == 4 and int(text) is not ValueError
+        else invalid_value_message,
     ).ask()
 
     day = questionary.text(
-        'Day? E.g. 17',
+        "Day? E.g. 17",
         default=str(date.today().day),
-        validate=lambda text: True if len(text) == 4 and int(text) is not ValueError else invalid_value_message
+        validate=lambda text: True
+        if len(text) == 4 and int(text) is not ValueError
+        else invalid_value_message,
     ).ask()
 
     if year or month or day is None:
         return
 
-    return datetime.strptime(f'{year}-{month}-{day}', '%Y-%m-%d').date()
+    return datetime.strptime(f"{year}-{month}-{day}", "%Y-%m-%d").date()
 
 
 def check_if_exists(db, habit_title):
@@ -58,7 +64,7 @@ def check_if_exists(db, habit_title):
         return False
     habit_to_check = get_habit(db, habit_title)
     if habit_to_check is None:
-        print(f'The habit with the title `{habit_title}` does not exist.')
+        print(f"The habit with the title `{habit_title}` does not exist.")
         return False
     else:
         return True
@@ -74,5 +80,5 @@ def define_latest_date(db, habit_title):
     latest_date_string = get_latest_date(db, habit_title)[0]
     if latest_date_string is None:
         latest_date_string = get_creation_time(db, habit_title)[0]
-    latest_date = datetime.strptime(latest_date_string, '%Y-%m-%d').date()
+    latest_date = datetime.strptime(latest_date_string, "%Y-%m-%d").date()
     return latest_date

@@ -1,15 +1,30 @@
 from datetime import timedelta, date
 
-from db import add_habit, add_completed_task, delete_habit, get_streak_count, get_longest_streak, get_periodicity, \
-    update_streak_count, update_longest_streak, reset_streak_count, delete_completed_tasks
+from db import (
+    add_habit,
+    add_completed_task,
+    delete_habit,
+    get_streak_count,
+    get_longest_streak,
+    get_periodicity,
+    update_streak_count,
+    update_longest_streak,
+    reset_streak_count,
+    delete_completed_tasks,
+)
 from constants import Periodicity
 from helpers import define_latest_date
 
 
 class Habit:
-    def __init__(self, title: str, description: str = '', periodicity: Periodicity = 'daily',
-                 creation_time: date = date.today()):
-        """ Habit class, to create a habit
+    def __init__(
+        self,
+        title: str,
+        description: str = "",
+        periodicity: Periodicity = "daily",
+        creation_time: date = date.today(),
+    ):
+        """Habit class, to create a habit
         :param title: a habit's title
         :param description: a habit's description
         :param periodicity: how often the habit should be performed
@@ -25,8 +40,10 @@ class Habit:
         Return the information about the current instance
         :return: a sting
         """
-        return f"title: {self.title}\ndescription: {self.description}\nperiodicity: {self.periodicity}\n" \
-               f"creation_time: {self.creation_time} "
+        return (
+            f"title: {self.title}\ndescription: {self.description}\nperiodicity: {self.periodicity}\n"
+            f"creation_time: {self.creation_time} "
+        )
 
 
 class DatabaseHabit(Habit):
@@ -36,7 +53,9 @@ class DatabaseHabit(Habit):
         :param db: a database connection
         :return: None
         """
-        add_habit(db, self.title, self.description, self.periodicity, self.creation_time)
+        add_habit(
+            db, self.title, self.description, self.periodicity, self.creation_time
+        )
 
     def complete_task(self, db, custom_date):
         """
@@ -49,20 +68,24 @@ class DatabaseHabit(Habit):
         streak_count = get_streak_count(db, self.title)[0]
         longest_streak = get_longest_streak(db, self.title)[0]
         periodicity = get_periodicity(db, self.title)[0]
-        periodicity_days = 1 if periodicity == 'daily' else 7
+        periodicity_days = 1 if periodicity == "daily" else 7
         latest_date = define_latest_date(db, self.title)
 
         add_completed_task(db, self.title, custom_date)
         if custom_date - timedelta(days=periodicity_days) <= latest_date:
             update_streak_count(db, self.title, streak_count)
-            print(f'The successful streak count was updated.')
+            print(f"The successful streak count was updated.")
             if streak_count + 1 > longest_streak:
                 update_longest_streak(db, self.title, longest_streak)
-                print(f'You have a new record! Your longest streak for the habit `{self.title}` is {streak_count + 1}.')
+                print(
+                    f"You have a new record! Your longest streak for the habit `{self.title}` is {streak_count + 1}."
+                )
         else:
-            print(f'You broke your habit! You skipped more than {timedelta(days=periodicity_days).days} day(s)')
+            print(
+                f"You broke your habit! You skipped more than {timedelta(days=periodicity_days).days} day(s)"
+            )
             reset_streak_count(db, self.title)
-            print(f'The successful streak count was updated.')
+            print(f"The successful streak count was updated.")
         db.commit()
 
     def delete(self, db):
