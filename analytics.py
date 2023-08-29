@@ -1,5 +1,5 @@
 from db import (
-    get_habits_titles,
+    get_habits_titles_and_descriptions,
     get_habits_period,
     get_longest_streaks,
     get_longest_streak,
@@ -10,14 +10,14 @@ from Habit import Periodicity
 
 def get_habits(db):
     """
-    Print the titles of all current habits
+    Print the titles and descriptions of all current habits
     :param db: a database connection
     :return: None
     """
-    titles = get_habits_titles(db)
-    print("Habit titles are: ")
-    for idx, x in enumerate(titles):
-        print(f"{idx + 1}. {x[0]}", end=" \n")
+    habits = get_habits_titles_and_descriptions(db)
+    print("Your current habits are: ")
+    for idx, x in enumerate(habits):
+        print(f"{idx + 1}. {x[0]}: {x[1]}", end=" \n")
 
 
 def get_period_habits(db, period):
@@ -73,4 +73,7 @@ def get_weakest_habits(db):
         streaks = get_all_streak_counts(db, period)
         sorted_streaks = sorted(streaks, key=lambda x: x[1])
         print(period)
-        print(f"{sorted_streaks[0][0]} - {sorted_streaks[0][1]}", end=" \n")
+        print(
+            f"{sorted_streaks[0][0]}: the current streak count is {sorted_streaks[0][1]}",
+            end=" \n",
+        )

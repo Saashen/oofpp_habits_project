@@ -105,14 +105,14 @@ def get_habit(db, title):
     return cur.fetchone()
 
 
-def get_habits_titles(db):
+def get_habits_titles_and_descriptions(db):
     """
-    Return titles of all habits from the database
+    Return titles and descriptions of all habits from the database
     :param db: a database connection
-    :return: titles of all habits
+    :return: titles and descriptions of all habits
     """
     cur = db.cursor()
-    cur.execute("SELECT title FROM habit")
+    cur.execute("SELECT title, description FROM habit")
     return cur.fetchall()
 
 

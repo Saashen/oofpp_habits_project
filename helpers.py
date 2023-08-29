@@ -62,4 +62,3 @@ def check_if_exists(db, habit_title):
         return False
     else:
         return True
-    

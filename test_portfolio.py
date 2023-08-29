@@ -94,7 +94,7 @@ class TestHabit:
         captured = capsys.readouterr()
         assert (
             captured.out
-            == "Habit titles are: \n1. test_title1 \n2. test_title2 \n3. test_title3 \n4. test_title4 \n"
+            == "Your current habits are: \n1. test_title1: test_description1 \n2. test_title2: test_description2 \n3. test_title3: test_description3 \n4. test_title4: test_description4 \n"
         )
 
         get_period_habits(self.db, "daily")
@@ -119,7 +119,7 @@ class TestHabit:
         captured = capsys.readouterr()
         assert (
             captured.out
-            == "Lately you struggled the most with these habits: \ndaily\ntest_title1 - 2 \nweekly\ntest_title2 - 1 \n"
+            == "Lately you struggled the most with these habits: \ndaily\ntest_title1: the current streak count is 2 \nweekly\ntest_title2: the current streak count is 1 \n"
         )
 
     def teardown_method(self):
